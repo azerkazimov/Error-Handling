@@ -20,15 +20,15 @@ function hideSpinner() {
 
 // Fetch and render user name
 let repos = null;
-function fetchUser(user) {
-  return fetch(`https://api.github.com/users/${user}`).then((response) =>
+async function fetchUser(user) {
+  return await fetch(`https://api.github.com/users/${user}`).then((response) =>
     response.json()
   );
 }
 
-function fetchRepo(user, element) {
+async function fetchRepo(user, element) {
   if (!user) return;
-  fetch(`https://api.github.com/users/${user}/repos`)
+  const response = await fetch(`https://api.github.com/users/${user}/repos`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("No data for response");
@@ -39,6 +39,7 @@ function fetchRepo(user, element) {
     .catch((error) => {
       console.warn(error.message);
     });
+  return response;
 }
 
 function renderUserData(userElem) {
@@ -76,8 +77,6 @@ function renderRepos(element, data) {
 
 const showUserBtn = document.querySelector(".name-form__btn");
 const userNameInput = document.querySelector(".name-form__input");
-
-
 
 function onSearch() {
   showSpinner();
